@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Vokabel
+comment0.text=\r\n@\ Raphael\ und\ David\ \r\n07.01.2026\r\n
+comment1.params=pD\ pF
+comment1.target=Vokabel(java.lang.String,\ java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ getDeutsch()
+comment3.params=
+comment3.target=java.lang.String\ getFremd()
+comment4.params=pText
+comment4.target=boolean\ checkDeutsch(java.lang.String)
+comment5.params=pText
+comment5.target=boolean\ checkFremd(java.lang.String)
+numComments=6
