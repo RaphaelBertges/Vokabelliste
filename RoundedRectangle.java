@@ -3,7 +3,7 @@ import java.awt.Color;
 
 public class RoundedRectangle {
 
-    private Sprite sprite;
+    public Sprite sprite;
 
     private Rectangle center, left, right;
     private Circle tl, tr, bl, br;
