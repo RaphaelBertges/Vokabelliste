@@ -31,13 +31,13 @@ public class Main
     }
     public void testSmoothMove()
     {
-        smoothMoveFromTo(100,100,400,300,50,sT,fenster,1);
+        smoothMoveFromTo(100,100,400,300,500,sT,fenster,1);
 
         // Ease-in + Ease-out
-        smoothMoveTo(100,100,50,sT,fenster,2);
+        smoothMoveTo(100,100,500,sT,fenster,2);
 
         // Kreisartige Bewegung
-        smoothMove(200,100,50,sT,fenster,5);
+        smoothMove(400,400,500,sT,fenster,5);
     }
     private double[] calcProgress(int type, int step, int totalSteps) {
         double t = (double) step / totalSteps; // normalisierte Zeit 0..1
@@ -90,7 +90,7 @@ public class Main
             double dx = xStart + (xEnd - xStart) * prog[0];
             double dy = yStart + (yEnd - yStart) * prog[1];
             obj.moveTo(dx, dy);
-            win.wait(15); // sichtbare Animation
+            win.wait(1); // sichtbare Animation
         }
     }
 
