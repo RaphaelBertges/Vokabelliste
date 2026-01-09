@@ -7,21 +7,32 @@ public class Main
     View fenster;
     
     Color l_b1, l_m1, l_a1;
-    Color d_b1, d_m1, d_a1;
+    
+    RoundedRectangle vokabelBackground, originalSprache, zielInput;
+    RoundedButton vokabelCheck;
+    Text txWort;
+    Textfield tfVokabel;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
     public Main(){
-        fenster = new View(1920,1080,"Vokabeltrainer");
+        fenster = new View(1280,720,"Vokabeltrainer");
         l_b1 = new Color(238,238,238);
         l_m1 = new Color (245,245,247);
         l_a1 = new Color (0,136,204);
-        d_b1 = new Color(29,29,31);
-        d_m1 = new Color (245,245,247);
-        d_a1 = new Color (0,102,204);
        
         fenster.setBackgroundColor(l_b1);
-    
+        loadVokabel();    
+    }
+    private void loadVokabel()
+    {
+        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
+        txWort = new Text(458,132,"Vokabel");
+        zielInput = new RoundedRectangle(450,200,378,64,l_b1,25);
+        tfVokabel = new Textfield(458,208,364,48,"Übersetzung",fenster);
+        tfVokabel.setActivated(true);
+        vokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
     }
     private double calcProgress(int mode, int step, int steps) {
         double t = (double) step / steps;
