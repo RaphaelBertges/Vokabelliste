@@ -1,9 +1,11 @@
 import sas.*;
 import java.awt.Color;
 
-public class RoundedButton {
+public class RoundedButton 
+/**Die gestamte Klasse ins Projekt importieren. Wie bei Queue,Stack,List.**/
+{
 
-    private Sprite sprite;
+    public Sprite sprite;
 
     private Rectangle center, left, right;
     private Circle tl, tr, bl, br;
@@ -16,14 +18,13 @@ public class RoundedButton {
                          String text,
                          int fontSize,
                          Color buttonColor,
-                         Color textColor) {
+                         Color textColor, int roundness) {
 
         this.x = xPos;
         this.y = yPos;
         this.width = width;
         this.height = height;
-
-        radius = height / 2.0;
+        this.radius = roundness;
 
         center = new Rectangle(x + radius, y,width - 2 * radius, height,buttonColor);
 

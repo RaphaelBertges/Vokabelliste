@@ -1,7 +1,10 @@
 import sas.*;
 import java.awt.Color;
 
-public class RoundedRectangle {
+public class RoundedRectangle 
+/**Die gestamte Klasse ins Projekt importieren. Wie bei Queue,Stack,List.**/
+{
+    
 
     public Sprite sprite;
 
@@ -10,14 +13,13 @@ public class RoundedRectangle {
 
     private double x, y, width, height, radius;
 
-    public RoundedRectangle(double xPos, double yPos, double width, double height,Color rectangleColor) 
+    public RoundedRectangle(double xPos, double yPos, double width, double height,Color rectangleColor, int roundness) 
     {
         this.x = xPos;
         this.y = yPos;
         this.width = width;
         this.height = height;
-
-        radius = height / 2.0;
+        this.radius = roundness;
 
         center = new Rectangle(x + radius, y,width - 2 * radius, height,rectangleColor);
 
