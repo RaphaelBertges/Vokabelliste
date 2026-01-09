@@ -54,11 +54,11 @@ public class RoundedButton
     }
 
     private void centerText() {
-        double textWidth = label.getText().length() * label.getShapeHeight() * 0.6;
+        double textWidth = label.getShapeWidth();
         double textHeight = label.getShapeHeight();
 
         double textX = x + (width - textWidth) / 2;
-        double textY = y + (height + textHeight / 2) / 2;
+        double textY = y + (height - textHeight) / 2;
 
         label.moveTo(textX, textY);
     }

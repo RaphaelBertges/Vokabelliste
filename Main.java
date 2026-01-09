@@ -12,6 +12,7 @@ public class Main
     RoundedButton vokabelCheck;
     Text txWort;
     Textfield tfVokabel;
+    Sprite vokabelGesamt;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -22,17 +23,41 @@ public class Main
         l_a1 = new Color (0,136,204);
        
         fenster.setBackgroundColor(l_b1);
-        loadVokabel();    
+        loadVokabel(true);
+        fenster.wait(100);
+        
+        moveRotateFromTo(-440,160,426,100,70,90,250,vokabelGesamt,fenster,2);
+        loadVokabel(false);
+        vokabelGesamt.setHidden(true);
+        fenster.remove(vokabelGesamt);
     }
-    private void loadVokabel()
+    private void loadVokabel(boolean sprite)
     {
-        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
-        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
-        txWort = new Text(458,132,"Vokabel");
-        zielInput = new RoundedRectangle(450,200,378,64,l_b1,25);
-        tfVokabel = new Textfield(458,208,364,48,"Übersetzung",fenster);
-        tfVokabel.setActivated(true);
-        vokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
+        originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
+        txWort = new Text(1468,142,"Vokabel");
+        txWort.move((350 - txWort.getShapeWidth() ) / 2);
+        zielInput = new RoundedRectangle(1450,200,378,64,l_b1,25);
+        vokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        if(sprite == false){
+            tfVokabel = new Textfield(458,208,364,48,"Übersetzung",fenster);
+            
+            vokabelBackground.sprite.move(-1000);
+            originalSprache.sprite.move(-1000);
+            txWort.move(-1000);
+            zielInput.sprite.move(-1000);
+            vokabelCheck.sprite.move(-1000);
+        }
+        
+        if(sprite == true){
+            vokabelGesamt = new Sprite();
+            vokabelGesamt.add(vokabelBackground.sprite);
+            vokabelGesamt.add(originalSprache.sprite);
+            vokabelGesamt.add(txWort);
+            vokabelGesamt.add(zielInput.sprite);
+            vokabelGesamt.add(vokabelCheck.sprite);
+        }
+        
     }
     private double calcProgress(int mode, int step, int steps) {
         double t = (double) step / steps;
