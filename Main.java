@@ -23,51 +23,63 @@ public class Main
         l_a1 = new Color (0,136,204);
        
         fenster.setBackgroundColor(l_b1);
-        loadVokabel(true);
+        loadVokabelAnimation();
         fenster.wait(100);
         
         moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
-        loadVokabel(false);
-        vokabelGesamt.setHidden(true);
         fenster.remove(vokabelGesamt);
-        
-        while(true){
-            if (tfVokabel.clicked()) {
-                tfVokabel.setActivated(true);
+        loadVokabel();
+    
+    }
+        static void main() {
+        Main app = new Main();
+    
+        while(true) {
+            // Textfeld aktivieren, wenn geklickt
+            if (app.tfVokabel.clicked()) {
+                app.tfVokabel.setActivated(true);
             }
-
-            if (fenster.keyPressed() && tfVokabel.getActivated()) {
-                char c = fenster.keyGetChar();
-                tfVokabel.textInput(c);
+    
+            // Text eingeben, wenn aktiviert
+            if (app.tfVokabel.getActivated()) {
+                while (app.fenster.keyPressed()) {
+                    char c = app.fenster.keyGetChar();
+                    app.tfVokabel.textInput(c);
+                }
             }
+    
+            app.fenster.wait(1);
         }
     }
-    private void loadVokabel(boolean sprite)
+
+    private void loadVokabelAnimation()
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
         txWort = new Text(1468,142,"Vokabel");
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
-        tfVokabel = new RoundedTextfield(1450,200,378,64,32,l_a1,Color.WHITE,25);
+        tfVokabel = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         vokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        if(sprite == false){           
-            vokabelBackground.sprite.move(-1000);
-            originalSprache.sprite.move(-1000);
-            txWort.move(-1000);
-            tfVokabel.sprite.move(-1000);
-            vokabelCheck.sprite.move(-1000);
-        }
         
-        if(sprite == true){
-            vokabelGesamt = new Sprite();
-            vokabelGesamt.add(vokabelBackground.sprite);
-            vokabelGesamt.add(originalSprache.sprite);
-            vokabelGesamt.add(txWort);
-            vokabelGesamt.add(tfVokabel.sprite);
-            vokabelGesamt.add(vokabelCheck.sprite);
-        }
-        
+        vokabelGesamt = new Sprite();
+        vokabelGesamt.add(vokabelBackground.sprite);
+        vokabelGesamt.add(originalSprache.sprite);
+        vokabelGesamt.add(txWort);
+        vokabelGesamt.add(tfVokabel.sprite);
+        vokabelGesamt.add(vokabelCheck.sprite);
+    
+    }
+    private void loadVokabel()
+    {
+        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
+        txWort = new Text(468,142,"Vokabel");
+        txWort.setFontSansSerif(true,32);
+        txWort.move((350 - txWort.getShapeWidth() ) / 2);
+        tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
+        vokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+    
     }
     private double calcProgress(int mode, int step, int steps) {
         double t = (double) step / steps;

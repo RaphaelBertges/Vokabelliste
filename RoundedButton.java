@@ -15,7 +15,7 @@ public class RoundedButton
     private boolean activated = false;
     
     private Color normalColor;
-    private Color activeColor = new Color(180, 220, 255);
+    private Color offColor;
     public RoundedButton(double xPos, double yPos,
                          double width, double height,
                          String text,
@@ -28,6 +28,8 @@ public class RoundedButton
         this.width = width;
         this.height = height;
         this.radius = roundness;
+        this.normalColor = buttonColor;
+        this.offColor = makeOffColor(buttonColor);
 
         center = new Rectangle(x + radius, y,width - 2 * radius, height,buttonColor);
 
@@ -54,6 +56,14 @@ public class RoundedButton
         sprite.add(bl);
         sprite.add(br);
         sprite.add(label);
+        setButtonColor(offColor);
+    }
+        private Color makeOffColor(Color c) {
+        return new Color(
+            (int)(c.getRed() * 0.75),
+            (int)(c.getGreen() * 0.75),
+            (int)(c.getBlue() * 0.75)
+        );
     }
 
     private void centerText() {
@@ -68,8 +78,8 @@ public class RoundedButton
     // ===== Aktivierung =====
     public void setActivated(boolean state) {
         activated = state;
-        if (state) setButtonColor(activeColor);
-        else setButtonColor(normalColor);
+        if (state) setButtonColor(normalColor);
+        else setButtonColor(offColor);
     }
 
     public boolean getActivated() {
