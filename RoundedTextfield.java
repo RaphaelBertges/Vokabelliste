@@ -21,7 +21,7 @@ public class RoundedTextfield {
     private Color normalColor;
     private Color offColor;
     private Color textColor;
-    private Color placeholderColor = new Color (240,240,240);
+    private Color placeholderColor = new Color (220,220,220);
 
     public RoundedTextfield(double xPos, double yPos,
                             double width, double height,
