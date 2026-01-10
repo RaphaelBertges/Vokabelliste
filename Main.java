@@ -8,10 +8,10 @@ public class Main
     
     Color l_b1, l_m1, l_a1;
     
-    RoundedRectangle vokabelBackground, originalSprache, zielInput;
+    RoundedRectangle vokabelBackground, originalSprache;
     RoundedButton vokabelCheck;
     Text txWort;
-    Textfield tfVokabel;
+    RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
     /**
      * Konstruktor für Objekte der Klasse Main
@@ -26,26 +26,36 @@ public class Main
         loadVokabel(true);
         fenster.wait(100);
         
-        moveRotateFromTo(-440,160,426,100,70,90,250,vokabelGesamt,fenster,2);
+        moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
         loadVokabel(false);
         vokabelGesamt.setHidden(true);
         fenster.remove(vokabelGesamt);
+        
+        while(true){
+            if (tfVokabel.clicked()) {
+                tfVokabel.setActivated(true);
+            }
+
+            if (fenster.keyPressed() && tfVokabel.getActivated()) {
+                char c = fenster.keyGetChar();
+                tfVokabel.textInput(c);
+            }
+        }
     }
     private void loadVokabel(boolean sprite)
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
         txWort = new Text(1468,142,"Vokabel");
+        txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
-        zielInput = new RoundedRectangle(1450,200,378,64,l_b1,25);
+        tfVokabel = new RoundedTextfield(1450,200,378,64,32,l_a1,Color.WHITE,25);
         vokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        if(sprite == false){
-            tfVokabel = new Textfield(458,208,364,48,"Übersetzung",fenster);
-            
+        if(sprite == false){           
             vokabelBackground.sprite.move(-1000);
             originalSprache.sprite.move(-1000);
             txWort.move(-1000);
-            zielInput.sprite.move(-1000);
+            tfVokabel.sprite.move(-1000);
             vokabelCheck.sprite.move(-1000);
         }
         
@@ -54,7 +64,7 @@ public class Main
             vokabelGesamt.add(vokabelBackground.sprite);
             vokabelGesamt.add(originalSprache.sprite);
             vokabelGesamt.add(txWort);
-            vokabelGesamt.add(zielInput.sprite);
+            vokabelGesamt.add(tfVokabel.sprite);
             vokabelGesamt.add(vokabelCheck.sprite);
         }
         
@@ -97,7 +107,7 @@ public class Main
                 xS + (xE - xS) * p,
                 yS + (yE - yS) * p
             );
-            win.wait(1);
+            win.wait(2);
         }
     }
     
@@ -123,7 +133,7 @@ public class Main
         for (int i = 1; i <= steps; i++) {
             double p = calcProgress(mode, i, steps);
             obj.turnTo(aS + (aE - aS) * p);
-            win.wait(1);
+            win.wait(2);
         }
     }
     
@@ -172,7 +182,7 @@ public class Main
             }
     
             obj.turnTo(aS + (aE - aS) * pRot);
-            win.wait(1);
+            win.wait(2);
         }
     }
     

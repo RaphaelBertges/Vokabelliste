@@ -12,7 +12,10 @@ public class RoundedButton
     private Text label;
 
     private double x, y, width, height, radius;
-
+    private boolean activated = false;
+    
+    private Color normalColor;
+    private Color activeColor = new Color(180, 220, 255);
     public RoundedButton(double xPos, double yPos,
                          double width, double height,
                          String text,
@@ -41,7 +44,7 @@ public class RoundedButton
         label.setFontSansSerif(true, fontSize);
 
         centerText();
-
+        
         sprite = new Sprite();
         sprite.add(center);
         sprite.add(left);
@@ -62,7 +65,16 @@ public class RoundedButton
 
         label.moveTo(textX, textY);
     }
+    // ===== Aktivierung =====
+    public void setActivated(boolean state) {
+        activated = state;
+        if (state) setButtonColor(activeColor);
+        else setButtonColor(normalColor);
+    }
 
+    public boolean getActivated() {
+        return activated;
+    }
     public boolean clicked() {
         return sprite.mouseClicked();
     }
