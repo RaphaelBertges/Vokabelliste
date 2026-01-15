@@ -14,7 +14,7 @@ public class Main
     Text txWort;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
-    
+    String textFremd;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -27,6 +27,8 @@ public class Main
         fenster.setBackgroundColor(l_b1);
         sMove = new smoothMove();
         //test
+        textFremd = "Alpin";
+        
         loadVokabelAnimation();
         fenster.wait(100);
         
@@ -35,32 +37,53 @@ public class Main
         loadVokabel();
     
     }
-        static void main() {
+    static void main() {
         Main app = new Main();
         
-        while(true) {
-            // Textfeld aktivieren, wenn geklickt
+        while (true) {
+            boolean checkTriggered = false;
+        
+            // Überprüfung auslösen
+            if (app.vokabelCheck.clicked()) {
+                checkTriggered = true;
+            }
+            if (app.fenster.keyEnterPressed()) {
+                checkTriggered = true;
+                // Aktivierung nicht ändern, damit Enter mehrfach drücken kann
+            }
+        
+            if (checkTriggered) {
+                boolean vokabelIsCorrect = app.checkVokabel();
+                if (vokabelIsCorrect) {
+                    app.tfVokabel.setNewColor(Color.GREEN);
+                } else {
+                    app.tfVokabel.setNewColor(Color.RED);
+                }
+            }
+        
+            // Textfeld aktivieren bei Klick
             if (app.tfVokabel.clicked()) {
                 app.tfVokabel.setActivated(true);
             }
-    
+        
             // Text eingeben, wenn aktiviert
-            if (app.tfVokabel.getActivated()) {
-                while (app.fenster.keyPressed()) {
-                    char c = app.fenster.keyGetChar();
-                    app.tfVokabel.textInput(c);
-                }
+            if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
+                char c = app.fenster.keyGetChar();
+                app.tfVokabel.textInput(c);
             }
-    
+        
+            // Frame wait
             app.fenster.wait(1);
         }
+
+
     }
 
     private void loadVokabelAnimation()
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
-        txWort = new Text(1468,142,"Vokabel");
+        txWort = new Text(1468,142,textFremd);
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
@@ -78,15 +101,24 @@ public class Main
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
-        txWort = new Text(468,142,"Vokabel");
+        txWort = new Text(468,142,textFremd);
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         vokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-    
+        vokabelCheck.setActivated(true);
     }
-    
-        private class smoothMove{
+    private boolean checkVokabel()
+    {
+        String textInput = tfVokabel.getText();
+        if(textInput.equals(textFremd)){
+           return true; 
+        }
+        else{
+            return false;
+        }
+    }
+    private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
             double t = (double) step / steps;
         
@@ -234,6 +266,5 @@ public class Main
             );
         }
     }
-
 
 }

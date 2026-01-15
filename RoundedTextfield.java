@@ -40,8 +40,7 @@ public class RoundedTextfield {
         this.textColor = textColor;
         this.radius = roundness;
         
-        this.normalColor = fieldColor;
-        this.offColor = makeOffColor(fieldColor);
+        offColor = makeOffColor(normalColor);
 
         maxChars = (int) (width / (fontSize * 0.6)) - 1;
 
@@ -153,6 +152,17 @@ public class RoundedTextfield {
     }
 
     // ===== Farbe setzen =====
+    public void setNewColor(Color c){
+        normalColor = c;
+        offColor = makeOffColor(normalColor);
+        if(getActivated()){
+            setColor(normalColor);
+        }
+        else{
+            setColor(offColor);
+        }
+        
+    }
     private void setColor(Color c) {
         center.setColor(c);
         left.setColor(c);
