@@ -41,7 +41,23 @@ public class Main
         Main app = new Main();
         
         while (true) {
-            if (app.btnVokabelCheck.clicked() || app.fenster.keyEnterPressed()) {
+            if (app.tfVokabel.clicked()) {
+                app.tfVokabel.setActivated(true);
+            }
+            if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
+                char c = app.fenster.keyGetChar();
+                if(c != '\n')
+                {
+                    app.tfVokabel.textInput(c);
+                }
+                else
+                {
+                    app.tfVokabel.setActivated(false);
+                }
+            }
+            
+            if (app.btnVokabelCheck.clicked() || app.fenster.keyEnterPressed())
+            {   
                 boolean vokabelIsCorrect = app.checkVokabel();
                 if (vokabelIsCorrect) {
                     app.tfVokabel.setNewColor(Color.GREEN);
@@ -50,15 +66,6 @@ public class Main
                     app.correction = new RoundedButton(450,800,378,64,app.textDeutsch,32,Color.RED,Color.WHITE,25);
                 }
             }
-        
-            if (app.tfVokabel.clicked()) {
-                app.tfVokabel.setActivated(true);
-            }
-            if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
-                char c = app.fenster.keyGetChar();
-                app.tfVokabel.textInput(c);
-            }
-        
             app.fenster.wait(1);
         }
 
