@@ -91,7 +91,7 @@ public class RoundedButton
         // return activated;
     // }
     public boolean clicked() {
-        return sprite.mouseClicked();
+        return sprite.mousePressed();
     }
 
     public void setText(String newText) {

@@ -9,9 +9,9 @@ public class Main
     
     Color l_b1, l_m1, l_a1;
     
-    RoundedRectangle vokabelBackground, originalSprache;
-    RoundedButton btnVokabelCheck, correction;
-    Text txWort;
+    RoundedRectangle vokabelBackground, originalSprache, correction;
+    RoundedButton btnVokabelCheck;
+    Text txWort, txCorrection;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
     String textFremd, textDeutsch;
@@ -46,13 +46,13 @@ public class Main
             }
             if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
                 char c = app.fenster.keyGetChar();
-                if(c != '\n')
+                if(c == '\n')
                 {
-                    app.tfVokabel.textInput(c);
+                    app.tfVokabel.setActivated(false);
                 }
                 else
                 {
-                    app.tfVokabel.setActivated(false);
+                    app.tfVokabel.textInput(c);
                 }
             }
             
@@ -63,15 +63,19 @@ public class Main
                     app.tfVokabel.setNewColor(Color.GREEN);
                 } else {
                     app.tfVokabel.setNewColor(Color.RED);
-                    app.correction = new RoundedButton(450,800,378,64,app.textDeutsch,32,Color.RED,Color.WHITE,25);
+                    app.addTextCorrection();
                 }
             }
+            app.fenster.keyBufferDelete();
             app.fenster.wait(1);
         }
 
 
     }
-
+    private void addTextCorrection()
+    {
+        correction = new RoundedRectangle(450,800,378,64,Color.RED,25);
+    }
     private void loadVokabelAnimation()
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);

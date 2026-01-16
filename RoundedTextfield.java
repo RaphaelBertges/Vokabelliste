@@ -126,7 +126,7 @@ public class RoundedTextfield
 
     // ===== Klick =====
     public boolean clicked() {
-        return sprite.mouseClicked();
+        return sprite.mousePressed();
     }
 
     // ===== Texteingabe =====
