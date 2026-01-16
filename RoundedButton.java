@@ -12,10 +12,12 @@ public class RoundedButton
     private Text label;
 
     private double x, y, width, height, radius;
-    private boolean activated = false;
+    //private boolean activated = false;
     
     private Color normalColor;
-    private Color offColor;
+    //private Color offColor;
+    private Color textColor;
+    
     public RoundedButton(double xPos, double yPos,
                          double width, double height,
                          String text,
@@ -29,7 +31,8 @@ public class RoundedButton
         this.height = height;
         this.radius = roundness;
         this.normalColor = buttonColor;
-        this.offColor = makeOffColor(buttonColor);
+        this.textColor = textColor;
+        //this.offColor = makeOffColor(buttonColor);
 
         center = new Rectangle(x + radius, y,width - 2 * radius, height,buttonColor);
 
@@ -56,15 +59,17 @@ public class RoundedButton
         sprite.add(bl);
         sprite.add(br);
         sprite.add(label);
-        setButtonColor(offColor);
+        setButtonColor(buttonColor);
     }
-        private Color makeOffColor(Color c) {
-        return new Color(
-            (int)(c.getRed() * 0.75),
-            (int)(c.getGreen() * 0.75),
-            (int)(c.getBlue() * 0.75)
-        );
-    }
+    
+    
+        // private Color makeOffColor(Color c) {
+        // return new Color(
+            // (int)(c.getRed() * 0.75),
+            // (int)(c.getGreen() * 0.75),
+            // (int)(c.getBlue() * 0.75)
+        // );
+    // }
 
     private void centerText() {
         double textWidth = label.getShapeWidth();
@@ -76,15 +81,15 @@ public class RoundedButton
         label.moveTo(textX, textY);
     }
     // ===== Aktivierung =====
-    public void setActivated(boolean state) {
-        activated = state;
-        if (state) setButtonColor(normalColor);
-        else setButtonColor(offColor);
-    }
+    // public void setActivated(boolean state) {
+        // activated = state;
+        // if (state) setButtonColor(normalColor);
+        // else setButtonColor(offColor);
+    // }
 
-    public boolean getActivated() {
-        return activated;
-    }
+    // public boolean getActivated() {
+        // return activated;
+    // }
     public boolean clicked() {
         return sprite.mouseClicked();
     }

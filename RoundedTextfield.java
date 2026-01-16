@@ -1,7 +1,9 @@
 import sas.*;
 import java.awt.Color;
 
-public class RoundedTextfield {
+public class RoundedTextfield 
+/**Die gestamte Klasse ins Projekt importieren. Wie bei Queue,Stack,List.**/
+{
 
     public Sprite sprite;
 

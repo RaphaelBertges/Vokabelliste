@@ -10,11 +10,11 @@ public class Main
     Color l_b1, l_m1, l_a1;
     
     RoundedRectangle vokabelBackground, originalSprache;
-    RoundedButton vokabelCheck;
+    RoundedButton btnVokabelCheck, correction;
     Text txWort;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
-    String textFremd;
+    String textFremd, textDeutsch;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -27,8 +27,8 @@ public class Main
         fenster.setBackgroundColor(l_b1);
         sMove = new smoothMove();
         //test
-        textFremd = "Alpin";
-        
+        textFremd = "Hello";
+        textDeutsch = "Hallo";
         loadVokabelAnimation();
         fenster.wait(100);
         
@@ -41,38 +41,24 @@ public class Main
         Main app = new Main();
         
         while (true) {
-            boolean checkTriggered = false;
-        
-            // Überprüfung auslösen
-            if (app.vokabelCheck.clicked()) {
-                checkTriggered = true;
-            }
-            if (app.fenster.keyEnterPressed()) {
-                checkTriggered = true;
-                // Aktivierung nicht ändern, damit Enter mehrfach drücken kann
-            }
-        
-            if (checkTriggered) {
+            if (app.btnVokabelCheck.clicked() || app.fenster.keyEnterPressed()) {
                 boolean vokabelIsCorrect = app.checkVokabel();
                 if (vokabelIsCorrect) {
                     app.tfVokabel.setNewColor(Color.GREEN);
                 } else {
                     app.tfVokabel.setNewColor(Color.RED);
+                    app.correction = new RoundedButton(450,800,378,64,app.textDeutsch,32,Color.RED,Color.WHITE,25);
                 }
             }
         
-            // Textfeld aktivieren bei Klick
             if (app.tfVokabel.clicked()) {
                 app.tfVokabel.setActivated(true);
             }
-        
-            // Text eingeben, wenn aktiviert
             if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
                 char c = app.fenster.keyGetChar();
                 app.tfVokabel.textInput(c);
             }
         
-            // Frame wait
             app.fenster.wait(1);
         }
 
@@ -83,18 +69,18 @@ public class Main
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
-        txWort = new Text(1468,142,textFremd);
+        txWort = new Text(1468,132,textFremd);
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
-        vokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        btnVokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
         
         vokabelGesamt = new Sprite();
         vokabelGesamt.add(vokabelBackground.sprite);
         vokabelGesamt.add(originalSprache.sprite);
         vokabelGesamt.add(txWort);
         vokabelGesamt.add(tfVokabel.sprite);
-        vokabelGesamt.add(vokabelCheck.sprite);
+        vokabelGesamt.add(btnVokabelCheck.sprite);
     
     }
     private void loadVokabel()
@@ -105,13 +91,13 @@ public class Main
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
-        vokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        vokabelCheck.setActivated(true);
+        btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        //btnVokabelCheck.setActivated(true);
     }
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
-        if(textInput.equals(textFremd)){
+        if(textInput.equals(textDeutsch)){
            return true; 
         }
         else{
