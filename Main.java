@@ -10,7 +10,7 @@ public class Main
     Color l_b1, l_m1, l_a1;
     
     RoundedRectangle vokabelBackground, originalSprache, correction;
-    RoundedButton btnVokabelCheck;
+    RoundedButton btnVokabelCheck, btnNextVokabel;
     Text txWort, txCorrection;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
@@ -29,13 +29,10 @@ public class Main
         //test
         textFremd = "Hello";
         textDeutsch = "Hallo";
-        loadVokabelAnimation();
+        
         fenster.wait(100);
         
-        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
-        fenster.remove(vokabelGesamt);
-        loadVokabel();
-    
+        vokabelIntroAnimation();
     }
     static void main() {
         Main app = new Main();
@@ -61,10 +58,17 @@ public class Main
                 boolean vokabelIsCorrect = app.checkVokabel();
                 if (vokabelIsCorrect) {
                     app.tfVokabel.setNewColor(Color.GREEN);
-                } else {
+                } 
+                else {
                     app.tfVokabel.setNewColor(Color.RED);
                     app.addTextCorrection();
                 }
+                app.fenster.remove(app.btnVokabelCheck.sprite);
+                app.btnNextVokabel.moveTo(450,500);
+            }
+            if (app.btnNextVokabel.clicked() || app.fenster.keyEnterPressed())
+            {
+                app.vokabelExitAnimation();
             }
             app.fenster.keyBufferDelete();
             app.fenster.wait(1);
@@ -74,7 +78,10 @@ public class Main
     }
     private void addTextCorrection()
     {
-        correction = new RoundedRectangle(450,800,378,64,Color.RED,25);
+        correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
+        txCorrection = new Text(468,312,textFremd);
+        txCorrection.setFontSansSerif(true,32);
+        txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
     private void loadVokabelAnimation()
     {
@@ -94,6 +101,36 @@ public class Main
         vokabelGesamt.add(btnVokabelCheck.sprite);
     
     }
+    private void composeVokabelAnimationEnd()
+    {
+        vokabelGesamt = new Sprite();
+        vokabelGesamt.add(vokabelBackground.sprite);
+        vokabelGesamt.add(originalSprache.sprite);
+        vokabelGesamt.add(txWort);
+        vokabelGesamt.add(tfVokabel.sprite);
+        vokabelGesamt.add(btnNextVokabel.sprite);  
+        vokabelGesamt.add(correction.sprite);
+        vokabelGesamt.add(txCorrection);
+    }
+    private void vokabelIntroAnimation()
+    {
+        loadVokabelAnimation();
+        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
+        fenster.remove(vokabelGesamt);
+        loadVokabel();
+    }
+    private void vokabelExitAnimation()
+    {
+        composeVokabelAnimationEnd();
+        fenster.wait(60);
+        sMove.moveRotateFromTo(426,100,1292,160,90,100,220,vokabelGesamt,fenster,4);
+        fenster.remove(vokabelGesamt);
+        //abfrage ob beim letzen Element
+        if(true){
+            //neue Vokabel laden
+            vokabelIntroAnimation();
+        }
+    }
     private void loadVokabel()
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
@@ -103,6 +140,7 @@ public class Main
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
         //btnVokabelCheck.setActivated(true);
     }
     private boolean checkVokabel()
