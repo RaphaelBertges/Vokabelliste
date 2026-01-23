@@ -108,9 +108,12 @@ public class Main
         vokabelGesamt.add(originalSprache.sprite);
         vokabelGesamt.add(txWort);
         vokabelGesamt.add(tfVokabel.sprite);
-        vokabelGesamt.add(btnNextVokabel.sprite);  
-        vokabelGesamt.add(correction.sprite);
-        vokabelGesamt.add(txCorrection);
+        vokabelGesamt.add(btnNextVokabel.sprite);
+        if(!checkVokabel())
+        {
+            vokabelGesamt.add(correction.sprite);
+            vokabelGesamt.add(txCorrection);
+        }
     }
     private void vokabelIntroAnimation()
     {
