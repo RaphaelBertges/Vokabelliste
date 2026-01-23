@@ -15,6 +15,7 @@ public class Main
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
     String textFremd, textDeutsch;
+    boolean vokabelIsCorrect;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -55,8 +56,8 @@ public class Main
             
             if (app.btnVokabelCheck.clicked() || app.fenster.keyEnterPressed())
             {   
-                boolean vokabelIsCorrect = app.checkVokabel();
-                if (vokabelIsCorrect) {
+                app.vokabelIsCorrect = app.checkVokabel();
+                if (app.vokabelIsCorrect) {
                     app.tfVokabel.setNewColor(Color.GREEN);
                 } 
                 else {
@@ -109,7 +110,7 @@ public class Main
         vokabelGesamt.add(txWort);
         vokabelGesamt.add(tfVokabel.sprite);
         vokabelGesamt.add(btnNextVokabel.sprite);
-        if(!checkVokabel())
+        if(!vokabelIsCorrect)
         {
             vokabelGesamt.add(correction.sprite);
             vokabelGesamt.add(txCorrection);
