@@ -37,7 +37,7 @@ public class Main
     }
     static void main() {
         Main app = new Main();
-        
+
         while (true) {
             if (app.tfVokabel.clicked()) {
                 app.tfVokabel.setActivated(true);
@@ -53,8 +53,7 @@ public class Main
                     app.tfVokabel.textInput(c);
                 }
             }
-            
-            if (app.btnVokabelCheck.clicked() || app.fenster.keyEnterPressed())
+            if (app.btnVokabelCheck.clicked())
             {   
                 app.vokabelIsCorrect = app.checkVokabel();
                 if (app.vokabelIsCorrect) {
@@ -74,8 +73,6 @@ public class Main
             app.fenster.keyBufferDelete();
             app.fenster.wait(1);
         }
-
-
     }
     private void addTextCorrection()
     {
