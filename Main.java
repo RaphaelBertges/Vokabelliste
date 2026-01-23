@@ -37,24 +37,24 @@ public class Main
     }
     static void main() {
         Main app = new Main();
-
+        boolean next = false;
+        boolean enterPressed;
         while (true) {
+            enterPressed = app.fenster.keyEnterPressed();
+
             if (app.tfVokabel.clicked()) {
                 app.tfVokabel.setActivated(true);
             }
             if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
                 char c = app.fenster.keyGetChar();
-                if(c == '\n')
-                {
+                if (c == '\n') {
                     app.tfVokabel.setActivated(false);
-                }
-                else
-                {
+                } else {
                     app.tfVokabel.textInput(c);
                 }
             }
-            if (app.btnVokabelCheck.clicked())
-            {   
+            if (app.btnVokabelCheck.clicked() || (enterPressed && !next)) {
+                enterPressed = false;   
                 app.vokabelIsCorrect = app.checkVokabel();
                 if (app.vokabelIsCorrect) {
                     app.tfVokabel.setNewColor(Color.GREEN);
@@ -65,9 +65,11 @@ public class Main
                 }
                 app.fenster.remove(app.btnVokabelCheck.sprite);
                 app.btnNextVokabel.moveTo(450,500);
+                next = true;
             }
-            if (app.btnNextVokabel.clicked() || app.fenster.keyEnterPressed())
-            {
+            if (app.btnNextVokabel.clicked() || enterPressed && next) {
+                enterPressed = false;
+                next = false;
                 app.vokabelExitAnimation();
             }
             app.fenster.keyBufferDelete();
