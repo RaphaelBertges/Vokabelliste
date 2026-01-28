@@ -22,10 +22,14 @@ public class Vokabel
     }
     public boolean checkDeutsch(String pText){
         return pText.equals(deutsch);
-        
     }
-      public boolean checkFremd(String pText){
+    public boolean checkFremd(String pText){
         return pText.equals(fremd);
-        
+    }
+    public void setDeutsch(String pD){
+        deutsch = pD;
+    }
+    public void setFremd(String pF){
+        deutsch = pF;
     }
 }

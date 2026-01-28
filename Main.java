@@ -3,11 +3,12 @@ import sasio.*;
 import java.awt.Color;
 public class Main
 {
-    List list;
+    List<Vokabel> list;
     View fenster;
     smoothMove sMove;
     
     Color l_b1, l_m1, l_a1;
+    
     
     RoundedRectangle vokabelBackground, originalSprache, correction;
     RoundedButton btnVokabelCheck, btnNextVokabel;
@@ -24,16 +25,38 @@ public class Main
         l_b1 = new Color(238,238,238);
         l_m1 = new Color (245,245,247);
         l_a1 = new Color (0,136,204);
-       
+        
+        list = new List<Vokabel>();
+        list.toFirst();
+        
+        Vokabel vokabel = new Vokabel("Hallo", "Hola");
+        list.append(vokabel);
+        
+        vokabel = new Vokabel("Danke", "Gracias");
+        list.append(vokabel);
+        
+        vokabel = new Vokabel("Informatik", "Informática");
+        list.append(vokabel);
+        
+        vokabel = new Vokabel("Bier", "Cerveza");
+        list.append(vokabel);
+        
+        vokabel = new Vokabel("Traum", "Sueño");
+        list.append(vokabel);
+        
+        list.toFirst();
+        Vokabel v = list.getContent();
+        textDeutsch = v.getDeutsch();
+        textFremd = v.getFremd();
+        
         fenster.setBackgroundColor(l_b1);
         sMove = new smoothMove();
-        //test
-        textFremd = "Hello";
-        textDeutsch = "Hallo";
         
         fenster.wait(100);
         
         vokabelIntroAnimation();
+        
+
     }
     static void main() {
         Main app = new Main();
@@ -62,6 +85,9 @@ public class Main
                 else {
                     app.tfVokabel.setNewColor(Color.RED);
                     app.addTextCorrection();
+                    Vokabel v = app.list.getContent();
+                    app.list.remove();
+                    app.list.append(v);
                 }
                 app.fenster.remove(app.btnVokabelCheck.sprite);
                 app.btnNextVokabel.moveTo(450,500);
@@ -79,7 +105,7 @@ public class Main
     private void addTextCorrection()
     {
         correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
-        txCorrection = new Text(468,312,textFremd);
+        txCorrection = new Text(468,312,textDeutsch);
         txCorrection.setFontSansSerif(true,32);
         txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
@@ -128,11 +154,21 @@ public class Main
         fenster.wait(60);
         sMove.moveRotateFromTo(426,100,1292,160,90,100,220,vokabelGesamt,fenster,4);
         fenster.remove(vokabelGesamt);
-        //abfrage ob beim letzen Element
-        if(true){
-            //neue Vokabel laden
-            vokabelIntroAnimation();
+        
+        if(!list.isEmpty())
+        {
+            if(vokabelIsCorrect){
+                list.next();
+            }
+            if(list.hasAccess()){                
+                Vokabel v = list.getContent();
+                textDeutsch = v.getDeutsch();
+                textFremd = v.getFremd();
+            
+                vokabelIntroAnimation();
+            }
         }
+        
     }
     private void loadVokabel()
     {
