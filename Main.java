@@ -17,6 +17,7 @@ public class Main
     Sprite vokabelGesamt;
     String textFremd, textDeutsch;
     boolean vokabelIsCorrect;
+    boolean nachDeutsch;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -44,6 +45,7 @@ public class Main
         vokabel = new Vokabel("Traum", "Sueño");
         list.append(vokabel);
         
+        nachDeutsch = true;
         list.toFirst();
         Vokabel v = list.getContent();
         textDeutsch = v.getDeutsch();
@@ -105,7 +107,12 @@ public class Main
     private void addTextCorrection()
     {
         correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
-        txCorrection = new Text(468,312,textDeutsch);
+        if(nachDeutsch){
+            txCorrection = new Text(468,312,textDeutsch);
+        }
+        else{
+            txCorrection = new Text(468,312,textFremd);
+        }
         txCorrection.setFontSansSerif(true,32);
         txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
@@ -113,7 +120,12 @@ public class Main
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
-        txWort = new Text(1468,132,textFremd);
+        if(nachDeutsch){
+            txWort = new Text(1468,132,textFremd);
+        }
+        else{
+            txWort = new Text(1468,132,textDeutsch);
+        } 
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
@@ -174,7 +186,12 @@ public class Main
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
-        txWort = new Text(468,142,textFremd);
+        if(nachDeutsch){
+            txWort = new Text(468,132,textFremd);
+        }
+        else{
+            txWort = new Text(468,132,textDeutsch);
+        } 
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
@@ -185,11 +202,32 @@ public class Main
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
-        if(textInput.equals(textDeutsch)){
-           return true; 
+        if(nachDeutsch)
+        {
+            if(textInput.equals(textDeutsch)){
+               return true; 
+            }
+            else{
+                return false;
+            }
         }
         else{
-            return false;
+            if(textInput.equals(textFremd)){
+               return true; 
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    private void changeDirection(){
+        if(nachDeutsch)
+        {
+            nachDeutsch = false;
+        }
+        else
+        {
+            nachDeutsch = true;
         }
     }
     private class smoothMove{
