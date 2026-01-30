@@ -9,15 +9,18 @@ public class Main
     
     Color l_b1, l_m1, l_a1;
     
-    
     RoundedRectangle vokabelBackground, originalSprache, correction;
     RoundedButton btnVokabelCheck, btnNextVokabel;
     Text txWort, txCorrection;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt;
     String textFremd, textDeutsch;
-    boolean vokabelIsCorrect;
-    boolean nachDeutsch;
+    
+    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben;
+    
+    RoundedTextfield txNewVokFremd, txNewVokDeutsch;
+    boolean vokabelIsCorrect,nachDeutsch;
+    boolean inMenu, inAbfrage, inHinzufügen;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -26,6 +29,13 @@ public class Main
         l_b1 = new Color(238,238,238);
         l_m1 = new Color (245,245,247);
         l_a1 = new Color (0,136,204);
+        
+        fenster.setBackgroundColor(l_b1);
+        sMove = new smoothMove();
+        
+        inMenu = true;
+        inAbfrage = false;
+        inHinzufügen = false;
         
         list = new List<Vokabel>();
         list.toFirst();
@@ -51,57 +61,79 @@ public class Main
         textDeutsch = v.getDeutsch();
         textFremd = v.getFremd();
         
-        fenster.setBackgroundColor(l_b1);
-        sMove = new smoothMove();
-        
-        fenster.wait(100);
-        
-        vokabelIntroAnimation();
-        
-
+        loadMenu();
     }
-    static void main() {
+    static void main()
+    {
         Main app = new Main();
+        app.runtime();
+    }
+    private void runtime() {
         boolean next = false;
         boolean enterPressed;
         while (true) {
-            enterPressed = app.fenster.keyEnterPressed();
-
-            if (app.tfVokabel.clicked()) {
-                app.tfVokabel.setActivated(true);
-            }
-            if (app.tfVokabel.getActivated() && app.fenster.keyPressed()) {
-                char c = app.fenster.keyGetChar();
-                if (c == '\n') {
-                    app.tfVokabel.setActivated(false);
-                } else {
-                    app.tfVokabel.textInput(c);
+            while(inMenu){
+                if(btnVokabelAbfrage.clicked()){
+                    fenster.remove(btnVokabelAbfrage.sprite);
+                    fenster.remove(btnAbfrageRichtung.sprite);
+                    fenster.remove(btnVokabelnEingeben.sprite);
+                    inMenu = false;
+                    inAbfrage = true;
+                    vokabelIntroAnimation();
                 }
-            }
-            if (app.btnVokabelCheck.clicked() || (enterPressed && !next)) {
-                enterPressed = false;   
-                app.vokabelIsCorrect = app.checkVokabel();
-                if (app.vokabelIsCorrect) {
-                    app.tfVokabel.setNewColor(Color.GREEN);
-                } 
-                else {
-                    app.tfVokabel.setNewColor(Color.RED);
-                    app.addTextCorrection();
-                    Vokabel v = app.list.getContent();
-                    app.list.remove();
-                    app.list.append(v);
+                if(btnAbfrageRichtung.clicked()){
+                    changeDirection();
+                    if(nachDeutsch){
+                        btnAbfrageRichtung.setText("Spanisch -> Deutsch");
+                    }
+                    else{
+                        btnAbfrageRichtung.setText("Deutsch -> Spanisch");
+                    }
                 }
-                app.fenster.remove(app.btnVokabelCheck.sprite);
-                app.btnNextVokabel.moveTo(450,500);
-                next = true;
+                if(btnVokabelnEingeben.clicked()){
+                
+                }
+                fenster.wait(1);
             }
-            if (app.btnNextVokabel.clicked() || enterPressed && next) {
-                enterPressed = false;
-                next = false;
-                app.vokabelExitAnimation();
-            }
-            app.fenster.keyBufferDelete();
-            app.fenster.wait(1);
+            while(inAbfrage){
+                enterPressed = fenster.keyEnterPressed();
+    
+                if (tfVokabel.clicked()) {
+                    tfVokabel.setActivated(true);
+                }
+                if (tfVokabel.getActivated() && fenster.keyPressed()) {
+                    char c = fenster.keyGetChar();
+                    if (c == '\n') {
+                        tfVokabel.setActivated(false);
+                    } else {
+                        tfVokabel.textInput(c);
+                    }
+                }
+                if (btnVokabelCheck.clicked() || (enterPressed && !next)) {
+                    enterPressed = false;   
+                    vokabelIsCorrect = checkVokabel();
+                    if (vokabelIsCorrect) {
+                        tfVokabel.setNewColor(Color.GREEN);
+                    } 
+                    else {
+                        tfVokabel.setNewColor(Color.RED);
+                        addTextCorrection();
+                        Vokabel v = list.getContent();
+                        list.remove();
+                        list.append(v);
+                    }
+                    fenster.remove(btnVokabelCheck.sprite);
+                    btnNextVokabel.moveTo(450,500);
+                    next = true;
+                }
+                if (btnNextVokabel.clicked() || enterPressed && next) {
+                    enterPressed = false;
+                    next = false;
+                    vokabelExitAnimation();
+                }
+                fenster.keyBufferDelete();
+                fenster.wait(1);
+            }        
         }
     }
     private void addTextCorrection()
@@ -121,10 +153,10 @@ public class Main
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(1450,124,378,64,l_b1,25);
         if(nachDeutsch){
-            txWort = new Text(1468,132,textFremd);
+            txWort = new Text(1468,138,textFremd);
         }
         else{
-            txWort = new Text(1468,132,textDeutsch);
+            txWort = new Text(1468,138,textDeutsch);
         } 
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
@@ -179,18 +211,26 @@ public class Main
             
                 vokabelIntroAnimation();
             }
+            else{
+                switchToMenu();
+            }
         }
-        
     }
+    private void switchToMenu(){
+        inMenu = true;
+        inAbfrage = false;
+        loadMenu();
+    }
+
     private void loadVokabel()
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
         originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
         if(nachDeutsch){
-            txWort = new Text(468,132,textFremd);
+            txWort = new Text(468,138,textFremd);
         }
         else{
-            txWort = new Text(468,132,textDeutsch);
+            txWort = new Text(468,138,textDeutsch);
         } 
         txWort.setFontSansSerif(true,32);
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
@@ -229,6 +269,11 @@ public class Main
         {
             nachDeutsch = true;
         }
+    }
+    private void loadMenu(){
+         btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
+         btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
+         btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
     }
     private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
