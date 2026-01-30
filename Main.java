@@ -212,14 +212,11 @@ public class Main
                 vokabelIntroAnimation();
             }
             else{
-                switchToMenu();
+                inMenu = true;
+                inAbfrage = false;
+                loadMenu();
             }
         }
-    }
-    private void switchToMenu(){
-        inMenu = true;
-        inAbfrage = false;
-        loadMenu();
     }
 
     private void loadVokabel()
