@@ -199,7 +199,7 @@ public class Main
         }
     }
     
-    
+    // das ist die "interaktive/funktionierende Vokabel"
     private void loadVokabel()
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
@@ -215,8 +215,8 @@ public class Main
         tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
         btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
-        //btnVokabelCheck.setActivated(true);
     }
+    // für die Animation muss ich das zur einer sprite zusammen"fügen/bauen" dann kann man nicht mehr interagieren
     private void loadVokabelAnimation()
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
@@ -238,8 +238,16 @@ public class Main
         vokabelGesamt.add(txWort);
         vokabelGesamt.add(tfVokabel.sprite);
         vokabelGesamt.add(btnVokabelCheck.sprite);
-    
     }
+    // die hier rufe ich auf um die beiden darüber nach einander automatisch auszuführen und die animation ist auch drin
+    private void vokabelIntroAnimation()
+    {
+        loadVokabelAnimation();
+        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
+        fenster.remove(vokabelGesamt);
+        loadVokabel();
+    }
+    // vorbereitung der animation, die "echten" interaktiven objekte werden verwandelt, dadurch steht wirklich da was man eingegeben hat
     private void composeVokabelAnimationEnd()
     {
         vokabelGesamt = new Sprite();
@@ -254,13 +262,7 @@ public class Main
             vokabelGesamt.add(txCorrection);
         }
     }
-    private void vokabelIntroAnimation()
-    {
-        loadVokabelAnimation();
-        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
-        fenster.remove(vokabelGesamt);
-        loadVokabel();
-    }
+    // der Animations ablauf selber & logik für laden den nächsten vokabel/zurück ins Menü
     private void vokabelExitAnimation()
     {
         composeVokabelAnimationEnd();
