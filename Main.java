@@ -13,19 +13,21 @@ public class Main
     RoundedButton btnVokabelCheck, btnNextVokabel;
     Text txWort, txCorrection;
     RoundedTextfield tfVokabel;
-    Sprite vokabelGesamt;
+    Sprite vokabelGesamt, vokabelAdder;
     String textFremd, textDeutsch;
     
     RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben;
     
     RoundedTextfield txNewVokFremd, txNewVokDeutsch;
+    RoundedButton btnNewVokabel, btnBack;
+    RoundedRectangle vokabelAddBackground;
     boolean vokabelIsCorrect,nachDeutsch;
-    boolean inMenu, inAbfrage, inHinzufügen;
+    boolean inMenu, inAbfrage, inHinzufuegen;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
     public Main(){
-        fenster = new View(1280,720,"Vokabeltrainer");
+        fenster = new View(1280,720,"Vokabeltrainer - Menü");
         l_b1 = new Color(238,238,238);
         l_m1 = new Color (245,245,247);
         l_a1 = new Color (0,136,204);
@@ -35,7 +37,7 @@ public class Main
         
         inMenu = true;
         inAbfrage = false;
-        inHinzufügen = false;
+        inHinzufuegen = false;
         
         list = new List<Vokabel>();
         list.toFirst();
@@ -79,6 +81,8 @@ public class Main
                     fenster.remove(btnVokabelnEingeben.sprite);
                     inMenu = false;
                     inAbfrage = true;
+                    fenster.setName("Vokabeltrainer - Abfrage");
+                    list.toFirst();
                     vokabelIntroAnimation();
                 }
                 if(btnAbfrageRichtung.clicked()){
@@ -91,10 +95,18 @@ public class Main
                     }
                 }
                 if(btnVokabelnEingeben.clicked()){
-                
+                    fenster.remove(btnVokabelAbfrage.sprite);
+                    fenster.remove(btnAbfrageRichtung.sprite);
+                    fenster.remove(btnVokabelnEingeben.sprite);
+                    inMenu = false;
+                    inHinzufuegen = true;
+                    fenster.setName("Vokabeltrainer - Hinzufügen");
+                    vokabelAdderIntroAnimation();
+                    btnBack = new RoundedButton(450,640,378,64,"Fertig",32,l_a1,Color.WHITE,25);
                 }
                 fenster.wait(1);
             }
+            
             while(inAbfrage){
                 enterPressed = fenster.keyEnterPressed();
     
@@ -133,20 +145,77 @@ public class Main
                 }
                 fenster.keyBufferDelete();
                 fenster.wait(1);
-            }        
+            }
+            
+            while(inHinzufuegen){
+                enterPressed = fenster.keyEnterPressed();
+    
+                if (txNewVokFremd.clicked()) {
+                    txNewVokFremd.setActivated(true);
+                    txNewVokDeutsch.setActivated(false);
+                }
+                if (txNewVokFremd.getActivated() && fenster.keyPressed()) {
+                    char c = fenster.keyGetChar();
+                    if (c == '\n') {
+                        txNewVokFremd.setActivated(false);
+                    } else {
+                        txNewVokFremd.textInput(c);
+                    }
+                }
+                if (txNewVokDeutsch.clicked()) {
+                    txNewVokDeutsch.setActivated(true);
+                    txNewVokFremd.setActivated(false);
+                }
+                if (txNewVokDeutsch.getActivated() && fenster.keyPressed()) {
+                    char c = fenster.keyGetChar();
+                    if (c == '\n') {
+                        txNewVokDeutsch.setActivated(false);
+                    } else {
+                        txNewVokDeutsch.textInput(c);
+                    }
+                }                
+                if (btnNewVokabel.clicked() || enterPressed ) {
+                    enterPressed = false;
+                    
+                    Vokabel vokabel = new Vokabel(txNewVokDeutsch.getText(), txNewVokFremd.getText());
+                    list.append(vokabel);
+                    
+                    vokabelAdderExitAnimation();
+                }
+                if (btnBack.clicked()) {
+                    inMenu = true;
+                    inHinzufuegen = false;
+                    fenster.remove(txNewVokFremd.sprite);
+                    fenster.remove(txNewVokDeutsch.sprite);
+                    fenster.remove(btnNewVokabel.sprite);
+                    fenster.remove(btnBack.sprite);
+                    fenster.remove(vokabelAddBackground.sprite);
+                    loadMenu();
+                    fenster.setName("Vokabeltrainer - Menü");
+                }
+                fenster.keyBufferDelete();
+                fenster.wait(1);
+            }
         }
     }
-    private void addTextCorrection()
+    
+    
+    private void loadVokabel()
     {
-        correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
+        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
         if(nachDeutsch){
-            txCorrection = new Text(468,312,textDeutsch);
+            txWort = new Text(468,138,textFremd);
         }
         else{
-            txCorrection = new Text(468,312,textFremd);
-        }
-        txCorrection.setFontSansSerif(true,32);
-        txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
+            txWort = new Text(468,138,textDeutsch);
+        } 
+        txWort.setFontSansSerif(true,32);
+        txWort.move((350 - txWort.getShapeWidth() ) / 2);
+        tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
+        btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
+        //btnVokabelCheck.setActivated(true);
     }
     private void loadVokabelAnimation()
     {
@@ -215,27 +284,24 @@ public class Main
                 inMenu = true;
                 inAbfrage = false;
                 loadMenu();
+                fenster.setName("Vokabeltrainer - Menü");
             }
         }
     }
-
-    private void loadVokabel()
+    
+    private void addTextCorrection()
     {
-        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
-        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
+        correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
         if(nachDeutsch){
-            txWort = new Text(468,138,textFremd);
+            txCorrection = new Text(468,312,textDeutsch);
         }
         else{
-            txWort = new Text(468,138,textDeutsch);
-        } 
-        txWort.setFontSansSerif(true,32);
-        txWort.move((350 - txWort.getShapeWidth() ) / 2);
-        tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
-        btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
-        //btnVokabelCheck.setActivated(true);
+            txCorrection = new Text(468,312,textFremd);
+        }
+        txCorrection.setFontSansSerif(true,32);
+        txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
+    
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
@@ -267,11 +333,56 @@ public class Main
             nachDeutsch = true;
         }
     }
+    
     private void loadMenu(){
          btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
          btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
          btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
     }
+    
+    private void loadAddVokabel(){
+        vokabelAddBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        txNewVokFremd = new RoundedTextfield(450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
+        txNewVokDeutsch = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
+        btnNewVokabel = new RoundedButton(450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
+    }
+    private void loadAddVokabelAnimation(){
+        vokabelAddBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
+        txNewVokFremd = new RoundedTextfield(1450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
+        txNewVokDeutsch = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
+        btnNewVokabel = new RoundedButton(1450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
+        
+        vokabelAdder = new Sprite();
+        vokabelAdder.add(vokabelAddBackground.sprite);
+        vokabelAdder.add(txNewVokFremd.sprite);
+        vokabelAdder.add(txNewVokDeutsch.sprite);
+        vokabelAdder.add(btnNewVokabel.sprite);
+    }
+    private void vokabelAdderIntroAnimation()
+    {
+        loadAddVokabelAnimation();
+        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelAdder,fenster,4);
+        fenster.remove(vokabelAdder);
+        loadAddVokabel();
+    }
+    private void composeVokabelAdderAnimationEnd()
+    {
+        vokabelAdder = new Sprite();
+        vokabelAdder.add(vokabelAddBackground.sprite);
+        vokabelAdder.add(txNewVokFremd.sprite);
+        vokabelAdder.add(txNewVokDeutsch.sprite);
+        vokabelAdder.add(btnNewVokabel.sprite);
+    }
+    private void vokabelAdderExitAnimation()
+    {
+        composeVokabelAdderAnimationEnd();
+        fenster.wait(60);
+        sMove.moveRotateFromTo(426,100,1292,160,90,100,220,vokabelAdder,fenster,4);
+        fenster.remove(vokabelAdder);
+        
+        vokabelAdderIntroAnimation(); 
+    }
+    
     private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
             double t = (double) step / steps;
