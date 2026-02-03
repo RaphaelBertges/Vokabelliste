@@ -102,7 +102,10 @@ public class RoundedButton
     public void setTextColor(Color color) {
         label.setFontColor(color);
     }
-
+    
+    public String getText(){
+        return label.getText();
+    }
     public void setButtonColor(Color color) {
         center.setColor(color);
         left.setColor(color);

@@ -4,9 +4,6 @@ import java.awt.Color;
 public class Main
 {
     List<Vokabel> list;
-    List<String> vokabelListenNamen;
-    String aktuelleListe;
-
     View fenster;
     smoothMove sMove;
     
@@ -19,7 +16,7 @@ public class Main
     Sprite vokabelGesamt;
     String textFremd, textDeutsch;
     
-    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben, btnListeWaehlen;
+    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben;
     
     RoundedTextfield txNewVokFremd, txNewVokDeutsch;
     boolean vokabelIsCorrect,nachDeutsch;
@@ -39,14 +36,6 @@ public class Main
         inMenu = true;
         inAbfrage = false;
         inHinzufügen = false;
-        
-        loadListenNamen();
-
-        if(!vokabelListenNamen.isEmpty()) {
-            vokabelListenNamen.toFirst();
-            aktuelleListe = vokabelListenNamen.getContent();
-            loadVokabelListe(aktuelleListe);
-        }
         
         list = new List<Vokabel>();
         list.toFirst();
@@ -88,7 +77,6 @@ public class Main
                     fenster.remove(btnVokabelAbfrage.sprite);
                     fenster.remove(btnAbfrageRichtung.sprite);
                     fenster.remove(btnVokabelnEingeben.sprite);
-                    fenster.remove(btnListeWaehlen.sprite);
                     inMenu = false;
                     inAbfrage = true;
                     vokabelIntroAnimation();
@@ -96,10 +84,10 @@ public class Main
                 if(btnAbfrageRichtung.clicked()){
                     changeDirection();
                     if(nachDeutsch){
-                        btnAbfrageRichtung.setText("Abfragerichtung (Fremd -> Deutsch)");
+                        btnAbfrageRichtung.setText("Spanisch -> Deutsch");
                     }
                     else{
-                        btnAbfrageRichtung.setText("Abfragerichtung (Deutsch -> Fremd)");
+                        btnAbfrageRichtung.setText("Deutsch -> Spanisch");
                     }
                 }
                 if(btnVokabelnEingeben.clicked()){
@@ -183,31 +171,6 @@ public class Main
         vokabelGesamt.add(btnVokabelCheck.sprite);
     
     }
-    private void loadVokabel()
-    {
-        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
-        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
-        if(nachDeutsch){
-            txWort = new Text(468,138,textFremd);
-        }
-        else{
-            txWort = new Text(468,138,textDeutsch);
-        } 
-        txWort.setFontSansSerif(true,32);
-        txWort.move((350 - txWort.getShapeWidth() ) / 2);
-        tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
-        btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
-        //btnVokabelCheck.setActivated(true);
-    }
-    
-    private void vokabelIntroAnimation()
-    {
-        loadVokabelAnimation();
-        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
-        fenster.remove(vokabelGesamt);
-        loadVokabel();
-    }
     private void composeVokabelAnimationEnd()
     {
         vokabelGesamt = new Sprite();
@@ -221,6 +184,13 @@ public class Main
             vokabelGesamt.add(correction.sprite);
             vokabelGesamt.add(txCorrection);
         }
+    }
+    private void vokabelIntroAnimation()
+    {
+        loadVokabelAnimation();
+        sMove.moveRotateFromTo(-440,160,426,100,80,90,220,vokabelGesamt,fenster,4);
+        fenster.remove(vokabelGesamt);
+        loadVokabel();
     }
     private void vokabelExitAnimation()
     {
@@ -249,7 +219,23 @@ public class Main
         }
     }
 
-    
+    private void loadVokabel()
+    {
+        vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        originalSprache = new RoundedRectangle(450,124,378,64,l_b1,25);
+        if(nachDeutsch){
+            txWort = new Text(468,138,textFremd);
+        }
+        else{
+            txWort = new Text(468,138,textDeutsch);
+        } 
+        txWort.setFontSansSerif(true,32);
+        txWort.move((350 - txWort.getShapeWidth() ) / 2);
+        tfVokabel = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
+        btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
+        btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
+        //btnVokabelCheck.setActivated(true);
+    }
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
@@ -282,73 +268,10 @@ public class Main
         }
     }
     private void loadMenu(){
-         btnVokabelAbfrage = new RoundedButton(100,100,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
-         btnListeWaehlen = new RoundedButton(100,300,378,64,"Liste wählen",32,l_a1,Color.WHITE,25);
-         btnAbfrageRichtung = new RoundedButton(512,100,600,64,"Abfragerichtung (Fremd -> Deutsch)",32,l_a1,Color.WHITE,25);
-         btnVokabelnEingeben = new RoundedButton(512,300,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);
-
+         btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
+         btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
+         btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
     }
-    private void loadListenNamen() {
-        vokabelListenNamen = new List<String>();
-    
-        if(StringFileTools.fileExists("listnames.txt")) {
-            String[] namen = StringFileTools.loadFileInStringArray("listnames.txt");
-    
-            for(String n : namen) {
-                vokabelListenNamen.append(n);
-            }
-        }
-    }
-    private void saveListenNamen() {
-        vokabelListenNamen.toFirst();
-        String content = "";
-    
-        while(vokabelListenNamen.hasAccess()) {
-            content += vokabelListenNamen.getContent() + "\n";
-            vokabelListenNamen.next();
-        }
-    
-        StringFileTools.writeInFile("listnames.txt", content);
-    }
-    private void loadVokabelListe(String listenName) {
-        list = new List<Vokabel>();
-    
-        if(StringFileTools.fileExists(listenName + ".txt")) {
-            String[] zeilen = StringFileTools.loadFileInStringArray(listenName + ".txt");
-    
-            for(String z : zeilen) {
-                String[] parts = z.split(";");
-                if(parts.length == 2) {
-                    list.append(new Vokabel(parts[0], parts[1]));
-                }
-            }
-        }
-        list.toFirst();
-    }
-    private void saveAktuelleListe() {
-        list.toFirst();
-        String content = "";
-    
-        while(list.hasAccess()) {
-            Vokabel v = list.getContent();
-            content += v.getDeutsch() + ";" + v.getFremd() + "\n";
-            list.next();
-        }
-    
-        StringFileTools.writeInFile(aktuelleListe + ".txt", content);
-    }
-    private void neueListeErstellen(String name) {
-        vokabelListenNamen.append(name);
-        saveListenNamen();
-    
-        // leere Datei anlegen
-        StringFileTools.writeInFile(name + ".txt", "");
-    }
-    private void addVokabel(String deutsch, String fremd) {
-        list.append(new Vokabel(deutsch, fremd));
-        saveAktuelleListe();
-    }
-
     private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
             double t = (double) step / steps;
