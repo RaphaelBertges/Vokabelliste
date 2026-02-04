@@ -136,9 +136,12 @@ public class RoundedTextfield
             if (text.length() > 0)
                 text = text.substring(0, text.length() - 1);
                 setColor(normalColor);
+            if (text.length() == 0)
+                setColor(Color.ORANGE);            
         } else {
             if (text.length() < maxChars && c >= 32) {
                 text += c;
+                setColor(normalColor);
             }
             if (text.length() == maxChars){
                 setColor(Color.ORANGE);
@@ -151,7 +154,7 @@ public class RoundedTextfield
     public String getText() {
         return text;
     }
-
+    
     // ===== Farbe setzen =====
     public void setNewColor(Color c){
         normalColor = c;

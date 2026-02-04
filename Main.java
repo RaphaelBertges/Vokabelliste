@@ -6,18 +6,16 @@ public class Main
     List<Vokabel> list;
     View fenster;
     smoothMove sMove;
-    
+
     Color l_b1, l_m1, l_a1;
-    
+
     RoundedRectangle vokabelBackground, originalSprache, correction;
     RoundedButton btnVokabelCheck, btnNextVokabel;
     Text txWort, txCorrection;
     RoundedTextfield tfVokabel;
     Sprite vokabelGesamt, vokabelAdder;
     String textFremd, textDeutsch;
-    
-    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben, btnListeVerwalten;
-    
+    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben;
     RoundedTextfield txNewVokFremd, txNewVokDeutsch;
     RoundedButton btnNewVokabel, btnBack;
     RoundedRectangle vokabelAdderBackground;
@@ -34,45 +32,47 @@ public class Main
         l_b1 = new Color(238,238,238);
         l_m1 = new Color (245,245,247);
         l_a1 = new Color (0,136,204);
-        
+
         fenster.setBackgroundColor(l_b1);
         sMove = new smoothMove();
-        
+
         inMenu = true;
         inAbfrage = false;
         inHinzufuegen = false;
-        
+
         list = new List<Vokabel>();
         list.toFirst();
-        
+
         Vokabel vokabel = new Vokabel("Hallo", "Hola");
         list.append(vokabel);
-        
+
         vokabel = new Vokabel("Danke", "Gracias");
         list.append(vokabel);
-        
+
         vokabel = new Vokabel("Informatik", "Informática");
         list.append(vokabel);
-        
+
         vokabel = new Vokabel("Bier", "Cerveza");
         list.append(vokabel);
-        
+
         vokabel = new Vokabel("Traum", "Sueño");
         list.append(vokabel);
-        
+
         nachDeutsch = true;
         list.toFirst();
         Vokabel v = list.getContent();
         textDeutsch = v.getDeutsch();
         textFremd = v.getFremd();
-        
+
         loadMenu();
     }
+
     static void main()
     {
         Main app = new Main();
         app.runtime();
     }
+
     private void runtime() {
         boolean next = false;
         boolean enterPressed;
@@ -82,7 +82,7 @@ public class Main
                     fenster.remove(btnVokabelAbfrage.sprite);
                     fenster.remove(btnAbfrageRichtung.sprite);
                     fenster.remove(btnVokabelnEingeben.sprite);
-                    fenster.remove(btnListeVerwalten.sprite);
+
                     inMenu = false;
                     inAbfrage = true;
                     fenster.setName("Vokabeltrainer - Abfrage");
@@ -102,30 +102,18 @@ public class Main
                     fenster.remove(btnVokabelAbfrage.sprite);
                     fenster.remove(btnAbfrageRichtung.sprite);
                     fenster.remove(btnVokabelnEingeben.sprite);
-                    fenster.remove(btnListeVerwalten.sprite);
                     inMenu = false;
                     inHinzufuegen = true;
                     fenster.setName("Vokabeltrainer - Hinzufügen");
                     vokabelAdderIntroAnimation();
                     btnBack = new RoundedButton(450,640,378,64,"Fertig",32,l_a1,Color.WHITE,25);
                 }
-                if(btnListeVerwalten.clicked()){
-                    fenster.remove(btnVokabelAbfrage.sprite);
-                    fenster.remove(btnAbfrageRichtung.sprite);
-                    fenster.remove(btnVokabelnEingeben.sprite);
-                    fenster.remove(btnListeVerwalten.sprite);
-                    inMenu = false;
-                    inListe = true;
-                    fenster.setName("Vokabeltrainer - Hinzufügen");
-                    vokabelAdderIntroAnimation();
-                    btnBack = new RoundedButton(450,640,378,64,"Fertig",32,l_a1,Color.WHITE,25);
-                }
                 fenster.wait(1);
             }
-            
+
             while(inAbfrage){
                 enterPressed = fenster.keyEnterPressed();
-    
+
                 if (tfVokabel.clicked()) {
                     tfVokabel.setActivated(true);
                 }
@@ -162,10 +150,10 @@ public class Main
                 fenster.keyBufferDelete();
                 fenster.wait(1);
             }
-            
+
             while(inHinzufuegen){
                 enterPressed = fenster.keyEnterPressed();
-    
+
                 if (txNewVokFremd.clicked()) {
                     txNewVokFremd.setActivated(true);
                     txNewVokDeutsch.setActivated(false);
@@ -192,10 +180,15 @@ public class Main
                 }                
                 if (btnNewVokabel.clicked() || enterPressed ) {
                     enterPressed = false;
-                    
-                    Vokabel vokabel = new Vokabel(txNewVokDeutsch.getText(), txNewVokFremd.getText());
-                    list.append(vokabel);
-                    
+                    String d=txNewVokDeutsch.getText();
+                    String f=txNewVokFremd.getText();
+                    if(!d.equals ("")|| !f.equals("")){
+
+                        Vokabel vokabel = new Vokabel(d, f);
+                        list.append(vokabel);
+
+                        
+                    }
                     vokabelAdderExitAnimation();
                 }
                 if (btnBack.clicked()) {
@@ -214,8 +207,7 @@ public class Main
             }
         }
     }
-    
-    // das ist die "interaktive/funktionierende Vokabel"
+    // Es wird die interaktive Vokabel in die GUI geladen
     private void loadVokabel()
     {
         vokabelBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
@@ -232,7 +224,7 @@ public class Main
         btnVokabelCheck = new RoundedButton(450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
         btnNextVokabel = new RoundedButton(1450,500,378,64,"Weiter",32,l_a1,Color.WHITE,25);
     }
-    // für die Animation muss ich das zur einer sprite zusammen"fügen/bauen" dann kann man nicht mehr interagieren
+    // Um die Animation zu aktivieren wird es zu einer Sprite zusammengeführt, damit die einzenlen Komponenten nicht mehr reagieren
     private void loadVokabelAnimation()
     {
         vokabelBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
@@ -247,7 +239,7 @@ public class Main
         txWort.move((350 - txWort.getShapeWidth() ) / 2);
         tfVokabel = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnVokabelCheck = new RoundedButton(1450,500,378,64,"Überprüfen",32,l_a1,Color.WHITE,25);
-        
+
         vokabelGesamt = new Sprite();
         vokabelGesamt.add(vokabelBackground.sprite);
         vokabelGesamt.add(originalSprache.sprite);
@@ -255,7 +247,7 @@ public class Main
         vokabelGesamt.add(tfVokabel.sprite);
         vokabelGesamt.add(btnVokabelCheck.sprite);
     }
-    // die hier rufe ich auf um die beiden darüber nach einander automatisch auszuführen und die animation ist auch drin
+    // Es werden die beiden vorherigen Methoden automatisch nacheinander ausgeführt und die dazugehörige Animation wird aktiviert 
     private void vokabelIntroAnimation()
     {
         loadVokabelAnimation();
@@ -263,7 +255,7 @@ public class Main
         fenster.remove(vokabelGesamt);
         loadVokabel();
     }
-    // vorbereitung der animation, die "echten" interaktiven objekte werden verwandelt, dadurch steht wirklich da was man eingegeben hat
+    // Die animation wird vorbereitet und in das aktive objekt umgewandelt, wodurch die Eingabe korrekt da steht bzw. das, was man eingegeben hat
     private void composeVokabelAnimationEnd()
     {
         vokabelGesamt = new Sprite();
@@ -278,14 +270,14 @@ public class Main
             vokabelGesamt.add(txCorrection);
         }
     }
-    // der Animations ablauf selber & logik für laden den nächsten vokabel/zurück ins Menü
+    // der Animations ablauf an sich & die logik für laden den nächsten vokabel/zurück ins Menü
     private void vokabelExitAnimation()
     {
         composeVokabelAnimationEnd();
         fenster.wait(60);
         sMove.moveRotateFromTo(426,100,1292,160,90,100,220,vokabelGesamt,fenster,4);
         fenster.remove(vokabelGesamt);
-        
+
         if(!list.isEmpty())
         {
             if(vokabelIsCorrect){
@@ -295,7 +287,7 @@ public class Main
                 Vokabel v = list.getContent();
                 textDeutsch = v.getDeutsch();
                 textFremd = v.getFremd();
-            
+
                 vokabelIntroAnimation();
             }
             else{
@@ -306,7 +298,7 @@ public class Main
             }
         }
     }
-    
+    // Die anzeige, dass die eingegebene Vokabel falsch ist. Das Feld wird dementsprechend Rot 
     private void addTextCorrection()
     {
         correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
@@ -319,14 +311,14 @@ public class Main
         txCorrection.setFontSansSerif(true,32);
         txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
-    
+    // In der Methode 
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
         if(nachDeutsch)
         {
             if(textInput.equals(textDeutsch)){
-               return true; 
+                return true; 
             }
             else{
                 return false;
@@ -334,13 +326,14 @@ public class Main
         }
         else{
             if(textInput.equals(textFremd)){
-               return true; 
+                return true; 
             }
             else{
                 return false;
             }
         }
     }
+
     private void changeDirection(){
         if(nachDeutsch)
         {
@@ -351,32 +344,33 @@ public class Main
             nachDeutsch = true;
         }
     }
-    
+
     private void loadMenu(){
-         btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
-         btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
-         btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
-         btnListeVerwalten = new RoundedButton(450,500,378,64,"Liste bearbeiten",32,l_a1,Color.WHITE,25);  
+        btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
+        btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
+        btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
     }
-    
+
     private void loadAddVokabel(){
         vokabelAdderBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
         txNewVokFremd = new RoundedTextfield(450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
         txNewVokDeutsch = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnNewVokabel = new RoundedButton(450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
     }
+
     private void loadAddVokabelAnimation(){
         vokabelAdderBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         txNewVokFremd = new RoundedTextfield(1450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
         txNewVokDeutsch = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnNewVokabel = new RoundedButton(1450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
-        
+
         vokabelAdder = new Sprite();
         vokabelAdder.add(vokabelAdderBackground.sprite);
         vokabelAdder.add(txNewVokFremd.sprite);
         vokabelAdder.add(txNewVokDeutsch.sprite);
         vokabelAdder.add(btnNewVokabel.sprite);
     }
+
     private void vokabelAdderIntroAnimation()
     {
         loadAddVokabelAnimation();
@@ -384,6 +378,7 @@ public class Main
         fenster.remove(vokabelAdder);
         loadAddVokabel();
     }
+
     private void composeVokabelAdderAnimationEnd()
     {
         vokabelAdder = new Sprite();
@@ -392,20 +387,21 @@ public class Main
         vokabelAdder.add(txNewVokDeutsch.sprite);
         vokabelAdder.add(btnNewVokabel.sprite);
     }
+
     private void vokabelAdderExitAnimation()
     {
         composeVokabelAdderAnimationEnd();
         fenster.wait(60);
         sMove.moveRotateFromTo(426,100,1292,160,90,100,220,vokabelAdder,fenster,4);
         fenster.remove(vokabelAdder);
-        
+
         vokabelAdderIntroAnimation(); 
     }
-    
+
     private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
             double t = (double) step / steps;
-        
+
             switch (mode) {
                 case 1: return t;                             // linear
                 case 2: return 0.5 - 0.5 * Math.cos(Math.PI * t); // ease in/out
@@ -414,27 +410,29 @@ public class Main
                 default: return t;
             }
         }
+
         private double[] calcCircle(double cx, double cy,
-                                double radius,
-                                double angleStart,
-                                double angleEnd,
-                                int step, int steps,
-                                boolean invert) {
-        
+        double radius,
+        double angleStart,
+        double angleEnd,
+        int step, int steps,
+        boolean invert) {
+
             double t = (double) step / steps;
             double angle = angleStart + (angleEnd - angleStart) * t;
-        
+
             double x = cx + Math.cos(angle) * radius;
             double y = cy + Math.sin(angle) * radius;
-        
-                if (invert) y = cy - (y - cy);
-        
+
+            if (invert) y = cy - (y - cy);
+
             return new double[]{x, y};
         }
-            public void moveFromTo(double xS, double yS, double xE, double yE,
-                               int steps, Sprite obj, View win, int mode) {
+
+        public void moveFromTo(double xS, double yS, double xE, double yE,
+        int steps, Sprite obj, View win, int mode) {
             obj.moveTo(xS, yS);
-        
+
             for (int i = 1; i <= steps; i++) {
                 double p = calcProgress(mode, i, steps);
                 obj.moveTo(
@@ -444,67 +442,69 @@ public class Main
                 win.wait(2);
             }
         }
-        
+
         public void moveTo(double xE, double yE,
-                           int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             moveFromTo(obj.getShapeX(), obj.getShapeY(), xE, yE, steps, obj, win, mode);
         }
-        
+
         public void moveFrom(double xS, double yS,
-                             double dx, double dy,
-                             int steps, Sprite obj, View win, int mode) {
+        double dx, double dy,
+        int steps, Sprite obj, View win, int mode) {
             moveFromTo(xS, yS, xS + dx, yS + dy, steps, obj, win, mode);
         }
-        
+
         public void moveBy(double dx, double dy,
-                           int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             moveFrom(obj.getShapeX(), obj.getShapeY(), dx, dy, steps, obj, win, mode);
         }
-            public void rotateFromTo(double aS, double aE,
-                                 int steps, Sprite obj, View win, int mode) {
+
+        public void rotateFromTo(double aS, double aE,
+        int steps, Sprite obj, View win, int mode) {
             obj.turnTo(aS);
-        
+
             for (int i = 1; i <= steps; i++) {
                 double p = calcProgress(mode, i, steps);
                 obj.turnTo(aS + (aE - aS) * p);
                 win.wait(2);
             }
         }
-        
+
         public void rotateTo(double aE,
-                             int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             rotateFromTo(obj.getDirection(), aE, steps, obj, win, mode);
         }
-        
+
         public void rotateFrom(double aS, double da,
-                               int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             rotateFromTo(aS, aS + da, steps, obj, win, mode);
         }
-        
+
         public void rotateBy(double da,
-                             int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             rotateFrom(obj.getDirection(), da, steps, obj, win, mode);
         }
-            public void moveRotateFromTo(double xS, double yS, double xE, double yE,
-                                     double aS, double aE,
-                                     int steps, Sprite obj, View win, int mode) {
-        
+
+        public void moveRotateFromTo(double xS, double yS, double xE, double yE,
+        double aS, double aE,
+        int steps, Sprite obj, View win, int mode) {
+
             obj.moveTo(xS, yS);
             obj.turnTo(aS);
-        
+
             boolean circle = (mode >= 5);
             boolean invert = (mode == 6 || mode == 8);
             boolean easeRot = (mode == 7 || mode == 8);
-        
+
             double cx = (xS + xE) / 2;
             double cy = (yS + yE) / 2;
             double radius = Math.hypot(xE - xS, yE - yS) / 2;
-        
+
             for (int i = 1; i <= steps; i++) {
-        
+
                 double pMove = calcProgress(circle ? 1 : mode, i, steps);
                 double pRot  = calcProgress(easeRot ? 2 : 1, i, steps);
-        
+
                 if (circle) {
                     double[] pos = calcCircle(cx, cy, radius, 0, Math.PI, i, steps, invert);
                     obj.moveTo(pos[0], pos[1]);
@@ -514,34 +514,34 @@ public class Main
                         yS + (yE - yS) * pMove
                     );
                 }
-        
+
                 obj.turnTo(aS + (aE - aS) * pRot);
                 win.wait(2);
             }
         }
-        
+
         public void moveRotateTo(double xE, double yE, double aE,
-                                 int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             moveRotateFromTo(
                 obj.getShapeX(), obj.getShapeY(), xE, yE,
                 obj.getDirection(), aE,
                 steps, obj, win, mode
             );
         }
-        
+
         public void moveRotateFrom(double xS, double yS,
-                                   double dx, double dy,
-                                   double aS, double da,
-                                   int steps, Sprite obj, View win, int mode) {
+        double dx, double dy,
+        double aS, double da,
+        int steps, Sprite obj, View win, int mode) {
             moveRotateFromTo(
                 xS, yS, xS + dx, yS + dy,
                 aS, aS + da,
                 steps, obj, win, mode
             );
         }
-        
+
         public void moveRotateBy(double dx, double dy, double da,
-                                 int steps, Sprite obj, View win, int mode) {
+        int steps, Sprite obj, View win, int mode) {
             moveRotateFrom(
                 obj.getShapeX(), obj.getShapeY(),
                 dx, dy,
