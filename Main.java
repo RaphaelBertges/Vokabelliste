@@ -16,13 +16,16 @@ public class Main
     Sprite vokabelGesamt, vokabelAdder;
     String textFremd, textDeutsch;
     
-    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben;
+    RoundedButton btnVokabelAbfrage, btnAbfrageRichtung, btnVokabelnEingeben, btnListeVerwalten;
     
     RoundedTextfield txNewVokFremd, txNewVokDeutsch;
     RoundedButton btnNewVokabel, btnBack;
-    RoundedRectangle vokabelAddBackground;
+    RoundedRectangle vokabelAdderBackground;
+    
+    
+    
     boolean vokabelIsCorrect,nachDeutsch;
-    boolean inMenu, inAbfrage, inHinzufuegen;
+    boolean inMenu, inAbfrage, inHinzufuegen, inListe;
     /**
      * Konstruktor für Objekte der Klasse Main
      */
@@ -79,6 +82,7 @@ public class Main
                     fenster.remove(btnVokabelAbfrage.sprite);
                     fenster.remove(btnAbfrageRichtung.sprite);
                     fenster.remove(btnVokabelnEingeben.sprite);
+                    fenster.remove(btnListeVerwalten.sprite);
                     inMenu = false;
                     inAbfrage = true;
                     fenster.setName("Vokabeltrainer - Abfrage");
@@ -98,8 +102,20 @@ public class Main
                     fenster.remove(btnVokabelAbfrage.sprite);
                     fenster.remove(btnAbfrageRichtung.sprite);
                     fenster.remove(btnVokabelnEingeben.sprite);
+                    fenster.remove(btnListeVerwalten.sprite);
                     inMenu = false;
                     inHinzufuegen = true;
+                    fenster.setName("Vokabeltrainer - Hinzufügen");
+                    vokabelAdderIntroAnimation();
+                    btnBack = new RoundedButton(450,640,378,64,"Fertig",32,l_a1,Color.WHITE,25);
+                }
+                if(btnListeVerwalten.clicked()){
+                    fenster.remove(btnVokabelAbfrage.sprite);
+                    fenster.remove(btnAbfrageRichtung.sprite);
+                    fenster.remove(btnVokabelnEingeben.sprite);
+                    fenster.remove(btnListeVerwalten.sprite);
+                    inMenu = false;
+                    inListe = true;
                     fenster.setName("Vokabeltrainer - Hinzufügen");
                     vokabelAdderIntroAnimation();
                     btnBack = new RoundedButton(450,640,378,64,"Fertig",32,l_a1,Color.WHITE,25);
@@ -189,7 +205,7 @@ public class Main
                     fenster.remove(txNewVokDeutsch.sprite);
                     fenster.remove(btnNewVokabel.sprite);
                     fenster.remove(btnBack.sprite);
-                    fenster.remove(vokabelAddBackground.sprite);
+                    fenster.remove(vokabelAdderBackground.sprite);
                     loadMenu();
                     fenster.setName("Vokabeltrainer - Menü");
                 }
@@ -340,22 +356,23 @@ public class Main
          btnVokabelAbfrage = new RoundedButton(450,200,378,64,"Vokabel Abfrage",32,l_a1,Color.WHITE,25);
          btnAbfrageRichtung = new RoundedButton(450,300,378,64,"Spanisch -> Deutsch",32,l_a1,Color.WHITE,25);
          btnVokabelnEingeben = new RoundedButton(450,400,378,64,"Vokabeln Hinzufügen",32,l_a1,Color.WHITE,25);   
+         btnListeVerwalten = new RoundedButton(450,500,378,64,"Liste bearbeiten",32,l_a1,Color.WHITE,25);  
     }
     
     private void loadAddVokabel(){
-        vokabelAddBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
+        vokabelAdderBackground = new RoundedRectangle(426,100,426,520,l_m1,25);
         txNewVokFremd = new RoundedTextfield(450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
         txNewVokDeutsch = new RoundedTextfield(450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnNewVokabel = new RoundedButton(450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
     }
     private void loadAddVokabelAnimation(){
-        vokabelAddBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
+        vokabelAdderBackground = new RoundedRectangle(1426,100,426,520,l_m1,25);
         txNewVokFremd = new RoundedTextfield(1450,124,378,64,32,"Fremdwort",l_b1,Color.BLACK,25);
         txNewVokDeutsch = new RoundedTextfield(1450,200,378,64,32,"Übersetzung",l_a1,Color.WHITE,25);
         btnNewVokabel = new RoundedButton(1450,500,378,64,"Nächste Vokabel",32,l_a1,Color.WHITE,25);
         
         vokabelAdder = new Sprite();
-        vokabelAdder.add(vokabelAddBackground.sprite);
+        vokabelAdder.add(vokabelAdderBackground.sprite);
         vokabelAdder.add(txNewVokFremd.sprite);
         vokabelAdder.add(txNewVokDeutsch.sprite);
         vokabelAdder.add(btnNewVokabel.sprite);
@@ -370,7 +387,7 @@ public class Main
     private void composeVokabelAdderAnimationEnd()
     {
         vokabelAdder = new Sprite();
-        vokabelAdder.add(vokabelAddBackground.sprite);
+        vokabelAdder.add(vokabelAdderBackground.sprite);
         vokabelAdder.add(txNewVokFremd.sprite);
         vokabelAdder.add(txNewVokDeutsch.sprite);
         vokabelAdder.add(btnNewVokabel.sprite);
