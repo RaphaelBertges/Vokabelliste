@@ -1,3 +1,14 @@
+
+/**
+ * Das Programm dient als Vokabeltrainer. Nach dem Start gelangt man in ein Auswahlmenü mit drei Feldern. Mit dem oberen ersten Feld kann man die Abfrage starten und gelangt in das Abfragefeld,
+ * in dem eine Vokabel angezeigt wird. Diese muss man übersetzen und kann dies entweder durch Klicken des Übersetzen-Buttons oder durch Drücken der Enter-Taste aktivieren.
+   Drückt man im Menü das zweite Feld, werden die Sprachen jeweils gewechselt.
+   Im dritten Feld des Menüs kann man eigene neue Vokabeln einfügen. Um das jeweilige Feld zu aktivieren, muss man mit der linken Maustaste auf das Feld klicken.
+   
+   
+   Ein Projekt von Raphael Bertges und David Krol, Finale/Fertige version - 03.02.2026
+ */
+
 import sas.*;
 import sasio.*;
 import java.awt.Color;
@@ -296,7 +307,7 @@ public class Main
             }
         }
     }
-    // Die anzeige, dass die eingegebene Vokabel falsch ist. Das Feld wird dementsprechend Rot 
+    // Die anzeige, dass die eingegebene Vokabel falsch ist
     private void addTextCorrection()
     {
         correction = new RoundedRectangle(450,300,378,64,Color.RED,25);
@@ -309,7 +320,7 @@ public class Main
         txCorrection.setFontSansSerif(true,32);
         txCorrection.move((350 - txWort.getShapeWidth() ) / 2);
     }
-    // In der Methode 
+    // In der Methode wird überprüft, ob die vom Benutzer eingegebene Vokabel die richtige ist 
     private boolean checkVokabel()
     {
         String textInput = tfVokabel.getText();
@@ -331,7 +342,7 @@ public class Main
             }
         }
     }
-
+    // Man wechselt die Zielsprache, auf die man Übersetzen möchte
     private void changeDirection(){
         if(nachDeutsch)
         {
@@ -395,7 +406,8 @@ public class Main
 
         vokabelAdderIntroAnimation(); 
     }
-
+    // In den folgenden Methoden werden die von Raphael erstellten Animationen übertragen.
+    // Das betrift die Einführung, Bestätigung... 
     private class smoothMove{
         private double calcProgress(int mode, int step, int steps) {
             double t = (double) step / steps;
